@@ -7,6 +7,7 @@ from typing import Type
 from typing import Union
 from urllib.parse import quote
 from urllib.robotparser import RobotFileParser
+import os
 
 from requests import Session
 
@@ -67,7 +68,8 @@ class FAAPI:
         """
         Crawl delay from robots.txt
         """
-        return float(self.robots.crawl_delay(self.user_agent) or 1)
+        delay = self.robots.crawl_delay(self.user_agent) or 1
+        return float(os.environ.get("FALR_DELAY", delay))
 
     def load_cookies(self, cookies: Union[list[CookieDict], CookieJar]):
         """
